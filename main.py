@@ -198,8 +198,7 @@ if __name__ == "__main__":
     Запуск этого скрипта через какие-то кастомные bash выполнять
     cd *path_to_this_file* && ./main.py
     """
-    main()
+    # main()
     scheduler = BlockingScheduler()
     scheduler.add_job(main, "cron", hour=2, args=[scheduler])  # , minute=31
-    # scheduler.add_job(main, "interval", seconds=3, args=[scheduler])
     scheduler.start()

@@ -1,4 +1,6 @@
 import os
+import glob
+import shutil
 from datetime import datetime
 from typing import List
 from utils.renamer import Renamer
@@ -10,6 +12,20 @@ from utils.logger import (
 )
 
 exec_command = DRWLinuxPacker.exec_command
+
+
+"""Слева - маска для поиска файлов
+Справо - иерархия директорий относительно базовой (./bases)
+более частные правила должны распологаться выше общих
+т.е. weekly выще чем все остальные"""
+FOLDER_IERARCHY = {
+    "DRW*weekly*": ["DrWeb", "weekly"],
+    "K*weekly*": ["Kaspersky", "weekly"],
+    "DRW*": ["DrWeb", "full"],
+    "K*": ["Kaspersky", "full"],
+    "*.iso": ["LiveCD"],
+    "kpda_avdb*": ["KPDA"],
+}
 
 
 class TotalArchive:
@@ -26,6 +42,8 @@ class TotalArchive:
     ):
         self.date = Renamer.strfdate(date_tag)
         self.path_to_bases_folder = path_to_bases_folder
+        self.make_folder_ierarchy()
+        self.move_for_mask()
         self.file_list: List[str] = self.get_all_files_in_folder(
             folder=path_to_bases_folder
         )
@@ -34,6 +52,26 @@ class TotalArchive:
             self.rename_base_dir()
         else:
             logger.error(f"Error for make total archive")
+
+    def make_folder_ierarchy(self):
+        for folder_list in FOLDER_IERARCHY.values():
+            os.makedirs(Path(self.path_to_bases_folder, *folder_list), exist_ok=True)
+
+    def move_for_mask(self):
+        for mask in FOLDER_IERARCHY.keys():
+            file_list_for_mask = [
+                file
+                for file in glob.glob(
+                    str(self.path_to_bases_folder / mask), recursive=True
+                )
+                if os.path.isfile(file)
+            ]
+            self.move_file_list(file_list_for_mask, dir_list=FOLDER_IERARCHY[mask])
+
+    def move_file_list(self, file_list_for_mask: List[Path], dir_list: List[str]):
+        for file_path in file_list_for_mask:
+            new_path = Path(self.path_to_bases_folder, *dir_list)
+            shutil.move(src=file_path, dst=new_path)
 
     def get_all_files_in_folder(self, folder: Path) -> List[str]:
         """Возвращает все абсолютные пути до .zip в текущей папке"""

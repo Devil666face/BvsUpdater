@@ -1,4 +1,5 @@
 import os
+import glob
 import re
 import subprocess
 import shutil
@@ -65,7 +66,9 @@ class WeeklyPacker(Renamer):
         self.date_now = self.strfdate(date_tag_now)
         self.path_to_base_dir_old = Path(os.getcwd()) / self.date_old
         self.zip_file_list_new = self.get_zip_files(base_dir=self.path_to_base_dir_new)
-        self.zip_file_list_old = self.get_zip_files(base_dir=self.path_to_base_dir_old)
+        self.zip_file_list_old = self.get_zip_files_recursive(
+            base_dir=self.path_to_base_dir_old
+        )
         if self.zip_file_list_old:
             self.compair_weekle_archives()
         else:
@@ -99,12 +102,28 @@ class WeeklyPacker(Renamer):
     def get_zip_files(self, base_dir) -> List[PosixPath] | False:
         """Получает все .zip в base_dir=path_to_base_dir,
         проверяет на наличие имен файлов с списке исключений,
-        возвразает список без исключений"""
+        возвращает список без исключений"""
         try:
             zip_file_list = Renamer.get_zip_files(base_dir)
         except FileNotFoundError as error:
             logger.error(f"Not found old directory with bases {base_dir}")
             return False
+        return [
+            file for file in zip_file_list if not self.is_exclude(file_name=file.name)
+        ]
+
+    def get_zip_files_recursive(self, base_dir) -> List[PosixPath] | False:
+        """Получает рекурсивно все .zip в base_dir=path_to_base_dir,
+        проверяет на наличие имен файлов с списке исключений,
+        возвращает список без исключений,
+        если папка не найдена выходит и пропускает создание недельных баз"""
+        if not os.path.exists(base_dir):
+            logger.error(f"Not found old directory with bases {base_dir}")
+            return False
+        base_dir = base_dir / "**" / "*.zip"
+        zip_file_list = [
+            Path(file) for file in glob.glob(str(base_dir), recursive=True)
+        ]
         return [
             file for file in zip_file_list if not self.is_exclude(file_name=file.name)
         ]
@@ -281,7 +300,7 @@ class WeeklyCompair(WeeklyPacker):
     def is_unique(self) -> bool:
         """Выполняет grep символа > для поиска в файле diff
         если returncode выполения команды не равен 0 значит > не найден
-        и функция возвращает False т.е. в файлах есть различия"""
+        и функция возвращает False т.е. в файлах идентичны"""
         command = f"cat {self.diff_file} | grep -q '>'"
         result = subprocess.Popen(
             command,
