@@ -30,6 +30,7 @@ from utils.env import (
     FSB_LOGIN,
     FSB_PASSWORD,
 )
+from utils.logger import logger
 
 
 def remove():
@@ -169,18 +170,21 @@ def load_other():
     )
 
 
-def main():
+def main(scheduler=None):
     """Для добавление в конце .zip даты отличной от текущей используется
     Renamer(date_tag="20230131")
     Для отслеживания процесса загрузки можно использовать
     watch du -ah --max-depth=1 bases/ drw/ ksc/
     """
+    if scheduler is not None:
+        for job in scheduler.get_jobs():
+            logger.debug(f"{job}")
     try:
         remove()
+        load_other()
         load_drw()
         make_linux_drw_base()
         load_ksc()
-        load_other()
         WeeklyPacker()
         Renamer()
         HashMaker()
@@ -196,6 +200,8 @@ if __name__ == "__main__":
     """
     main()
     scheduler = BlockingScheduler()
-    scheduler.add_job(main, "cron", hour=2)
+    Service.job = scheduler.add_job(
+        main, "cron", hour=2, args=[scheduler]
+    )  # , minute=31
+    # scheduler.add_job(main, "interval", seconds=3, args=[scheduler])
     scheduler.start()
-    # scheduler.add_job(main, "cron", hour=17, minute=31)

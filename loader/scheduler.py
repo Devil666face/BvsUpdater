@@ -1,12 +1,11 @@
 import subprocess
 import os
 from pathlib import Path
-from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers import SchedulerAlreadyRunningError
 
-# from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-scheduler = BlockingScheduler()
-# scheduler = AsyncIOScheduler()
+scheduler = BackgroundScheduler()
 
 
 def drw_ess10_log_check(path_to_folder: Path, log_name: str = "drwreploader.log"):
@@ -14,11 +13,14 @@ def drw_ess10_log_check(path_to_folder: Path, log_name: str = "drwreploader.log"
     scheduler.add_job(
         tail_drw_ess10_log,
         "interval",
-        args=[path_to_folder, log_name],
+        args=[scheduler, path_to_folder, log_name],
         seconds=2,
-        id="tail_drw_ess10_log",
+        id="drw_ess10_log_check",
     )
-    scheduler.start()
+    try:
+        scheduler.start()
+    except SchedulerAlreadyRunningError:
+        pass
 
 
 def find_line(line: str, string_for_find: str) -> bool:
@@ -28,7 +30,7 @@ def find_line(line: str, string_for_find: str) -> bool:
     return False
 
 
-def tail_drw_ess10_log(path_to_folder: Path, log_name: str) -> None:
+def tail_drw_ess10_log(scheduler, path_to_folder: Path, log_name: str) -> None:
     """Выполяет tail для файла и чтение его содержимого
     в случае если в строке лога найдена строка updated successfully
     1. Завершает wineserver -k
@@ -41,14 +43,9 @@ def tail_drw_ess10_log(path_to_folder: Path, log_name: str) -> None:
         stderr=subprocess.PIPE,
         encoding="UTF-8",
     )
-    returncode = result.wait()
     if successfull_load_check(result, string_for_find="updated successfully"):
-        scheduler.remove_job("tail_drw_ess10_log")
         os.system("/usr/bin/wineserver -k")
-        try:
-            scheduler.shutdown()
-        except RuntimeError as successfull_load:
-            pass
+        scheduler.remove_job("drw_ess10_log_check")
 
 
 def successfull_load_check(result, string_for_find) -> bool:

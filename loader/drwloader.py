@@ -83,11 +83,8 @@ class DRWLoaderESS10(DRWLoader):
             stderr=subprocess.PIPE,
             encoding="UTF-8",
         )
-        try:
-            drw_ess10_log_check(self.path_to_folder)
-            returncode = result.wait()
-        except RuntimeError as successfull_load:
-            pass
+        drw_ess10_log_check(self.path_to_folder)
+        returncode = result.wait()
         return True
 
     def make_finally_zip_archive(self, zip_name: str) -> bool:
