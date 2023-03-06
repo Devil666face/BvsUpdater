@@ -200,8 +200,6 @@ if __name__ == "__main__":
     """
     main()
     scheduler = BlockingScheduler()
-    Service.job = scheduler.add_job(
-        main, "cron", hour=2, args=[scheduler]
-    )  # , minute=31
+    scheduler.add_job(main, "cron", hour=2, args=[scheduler])  # , minute=31
     # scheduler.add_job(main, "interval", seconds=3, args=[scheduler])
     scheduler.start()
