@@ -31,6 +31,7 @@ from utils.env import (
     FSB_PASSWORD,
 )
 from utils.logger import logger
+from utils.cli import args
 from functools import wraps
 
 
@@ -208,7 +209,11 @@ if __name__ == "__main__":
     Запуск этого скрипта через какие-то кастомные bash выполнять
     cd *path_to_this_file* && ./main.py
     """
-    main()
-    # scheduler = BlockingScheduler()
-    # scheduler.add_job(main, "cron", hour=4, args=[scheduler])  # , minute=31
-    # scheduler.start()
+    if args.daemon:
+        logger.info("Exec in daemon mode")
+        scheduler = BlockingScheduler()
+        scheduler.add_job(main, "cron", hour=4, args=[scheduler])  # , minute=31
+        scheduler.start()
+    else:
+        logger.info("Exec in download mode")
+        main()

@@ -6,7 +6,7 @@ After=network.target
 User=root
 Group=root
 WorkingDirectory=%PWD%
-ExecStart=%PWD%/main.py
+ExecStart=%PWD%/main.py -d
 Restart=on-failure
 
 [Install]
