@@ -32,7 +32,14 @@ class WeeklyPacker(Renamer):
         date_tag_old=None,
         path_to_base_dir_new: Path = (Path(os.getcwd()) / "bases"),
         date_tag_now: datetime = datetime.now(),
-        exclude_list: List[str] = ["updates", "FSB.zip"],
+        exclude_list: List[str] = [
+            "updates",
+            "FSB.zip",
+            "DRW_ESS10.zip",
+            "DRW_ESS11.zip",
+            "DRW_ESS11.00.0,2",
+            "DRW_ESS13.zip",
+        ],
         days_ago=7,
         week_day="wednesday",
     ):

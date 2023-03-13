@@ -39,14 +39,22 @@ class DRWLoader:
             logger.error(f"{self.path_to_folder} not load")
 
     def make_finally_zip_archive(self, zip_name: str) -> bool:
-        """Переходит в папку со скаченными файлами, создает архив, перемещает его на две директории выше
-        в папку bases"""
+        """Перемещает архив DRW_ESS**.zip в папку bases, архив создается самим загрузчиком
+        см. параметр в drwreploader.conf
+        Разархивирует архив в папку repository.zip (будет необходима для создания Linux баз)
+        """
         logger.info(f"Start to make archive {zip_name}")
         path_to_source = self.path_to_folder / "repository.zip"
-        cd_command = f"cd {path_to_source} && "
-        zip_command = f"zip -rq9 {zip_name}.zip * && "
+        path_to_zip = self.path_to_folder / f"{zip_name}.zip"
+        # path_to_source = self.path_to_folder
+        # cd_command = f"cd {path_to_source} && "
+        cd_command = f"cd {self.path_to_folder} && "
+        # zip_command = f"zip -rq9 {zip_name}.zip * && "
         mv_command = f"mv {zip_name}.zip {self.path_to_bases}"
-        return exec_command(command=(cd_command + zip_command + mv_command))
+        unzip_command_for_linux = f"unzip -q {path_to_zip} -d {path_to_source}"
+        exec_command(unzip_command_for_linux)
+        return exec_command(command=(cd_command + mv_command))
+        # return exec_command(command=(cd_command + zip_command + mv_command))
 
     def load(self) -> bool:
         logger.info(f"Command for start download {self.command}")
@@ -71,12 +79,14 @@ class DRWLoader:
 class DRWLoaderESS10(DRWLoader):
     """Класс для загрузки DRWLoaderESS10, сделан отдельно, потому что после запуска
     бинарника через wine по заверщению загрузки скрипт зависает, способ решить проблему
-    описан в schduler.py
+    описан в schduler.py После скачивания баз во временную директорию, drwreploader повиснет.
+    Убиваем процесс когда видим строку успешной загрузки в логах и запускаем loader еще раз,
+    для создания архивы с базами (подписанным loaderом)
     """
 
     def load(self) -> bool:
         logger.info(f"Command for start download {self.command}")
-        result = subprocess.Popen(
+        load_drw_ess10 = subprocess.Popen(
             self.command,
             shell=True,
             stdout=subprocess.PIPE,
@@ -84,19 +94,37 @@ class DRWLoaderESS10(DRWLoader):
             encoding="UTF-8",
         )
         drw_ess10_log_check(self.path_to_folder)
-        returncode = result.wait()
+        returncode = load_drw_ess10.wait()
+        make_zip = subprocess.Popen(
+            self.command,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            encoding="UTF-8",
+        )
+        returncode = make_zip.wait()
         return True
 
     def make_finally_zip_archive(self, zip_name: str) -> bool:
-        """Переопределяет функцию у DRWLoader, zip_command, вместо * ./10-drwbases
-        т.к. в папке находится еще reploader.tmp и он тоже попадает в архив
-        """
         logger.info(f"Start to make archive {zip_name}")
         path_to_source = self.path_to_folder / "repository.zip"
-        cd_command = f"cd {path_to_source} && "
-        zip_command = f"zip -rq9 {zip_name}.zip ./10-drwbases && "
+        path_to_zip = self.path_to_folder / f"{zip_name}.zip"
+        cd_command = f"cd {self.path_to_folder} && "
         mv_command = f"mv {zip_name}.zip {self.path_to_bases}"
-        return exec_command(command=(cd_command + zip_command + mv_command))
+        unzip_command_for_linux = f"7z x {path_to_zip} -o{path_to_source}"
+        exec_command(unzip_command_for_linux)
+        return exec_command(command=(cd_command + mv_command))
+
+    # def make_finally_zip_archive(self, zip_name: str) -> bool:
+    #     """Переопределяет функцию у DRWLoader, zip_command, вместо * ./10-drwbases
+    #     т.к. в папке находится еще reploader.tmp и он тоже попадает в архив
+    #     """
+    #     logger.info(f"Start to make archive {zip_name}")
+    #     path_to_source = self.path_to_folder / "repository.zip"
+    #     cd_command = f"cd {path_to_source} && "
+    #     zip_command = f"zip -rq9 {zip_name}.zip ./10-drwbases && "
+    #     mv_command = f"mv {zip_name}.zip {self.path_to_bases}"
+    #     return exec_command(command=(cd_command + zip_command + mv_command))
 
 
 class DRWLoaderSS(DRWLoader):

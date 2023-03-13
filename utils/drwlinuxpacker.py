@@ -30,18 +30,27 @@ class DRWLinuxPacker:
         self.base_dir = base_dir
         self.path_to_bases = path_to_bases
         self.full_path_to_bases = self.get_temp_dir(next_prefix_dir=next_prefix_dir)
-        self.make_dir_for_lzma()
-        self.unpack_lzma_files()
-        self.make_finally_zip_archive(
-            path_to_zip=(base_dir / output_zip_name),
-            path_to_source=self.path_to_lzma_dir,
-        )
+        if self.full_path_to_bases:
+            self.make_dir_for_lzma()
+            self.unpack_lzma_files()
+            self.make_finally_zip_archive(
+                path_to_zip=(base_dir / output_zip_name),
+                path_to_source=self.path_to_lzma_dir,
+            )
+        else:
+            logger.warning(f"Skip to wake linux archive for {output_zip_name}")
 
     def get_temp_dir(self, next_prefix_dir: str) -> str:
-        """Получает промежуточную директорию по пути repositiry.zip/10-drwbases/*dir*/common"""
-        temp_dir = os.listdir(self.path_to_folder_with_base)[0]
-        full_path = self.path_to_folder_with_base / temp_dir / next_prefix_dir
-        return full_path
+        """Получает промежуточную директорию по пути repository.zip/10-drwbases/*dir*/common"""
+        try:
+            temp_dir = os.listdir(self.path_to_folder_with_base)[0]
+            full_path = self.path_to_folder_with_base / temp_dir / next_prefix_dir
+            return full_path
+        except FileNotFoundError as error:
+            logger.error(
+                f"Dir with source files not found {self.path_to_folder_with_base}. "
+            )
+        return False
 
     def make_dir_for_lzma(self, temp_dir_name: str = "bases") -> None:
         """Создает временную директорию bases,

@@ -31,6 +31,7 @@ from utils.env import (
     FSB_PASSWORD,
 )
 from utils.logger import logger
+from functools import wraps
 
 
 def remove():
@@ -136,8 +137,6 @@ def load_drw():
     drw_ess11002_obj = DRWLoader(path_to_folder="DRW_ESS11.00.0,2")
     drw_ess11_obj = DRWLoader(path_to_folder="DRW_ESS11")
 
-    # drw_ss_obj = DRWLoader(path_to_folder="DRW_SS")
-
 
 def load_ksc():
     """Скачивает все обновления kaspersky"""
@@ -170,6 +169,19 @@ def load_other():
     )
 
 
+def exception(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            result = func(*args, **kwargs)
+        except Exception as error:
+            logger.exception(error)
+        return result
+
+    return wrapper
+
+
+@exception
 def main(scheduler=None):
     """Для добавление в конце .zip даты отличной от текущей используется
     Renamer(date_tag="20230131")
@@ -179,18 +191,16 @@ def main(scheduler=None):
     if scheduler is not None:
         for job in scheduler.get_jobs():
             logger.debug(f"{job}")
-    try:
-        remove()
-        load_other()
-        load_drw()
-        make_linux_drw_base()
-        load_ksc()
-        WeeklyPacker()
-        Renamer()
-        HashMaker()
-        TotalArchive()
-    except Exception as error:
-        logger.exception(error)
+
+    remove()
+    # load_other()
+    load_drw()
+    make_linux_drw_base()
+    load_ksc()
+    WeeklyPacker(date_tag_old="20230301")
+    Renamer()
+    HashMaker()
+    TotalArchive()
 
 
 if __name__ == "__main__":
@@ -198,7 +208,7 @@ if __name__ == "__main__":
     Запуск этого скрипта через какие-то кастомные bash выполнять
     cd *path_to_this_file* && ./main.py
     """
-    # main()
-    scheduler = BlockingScheduler()
-    scheduler.add_job(main, "cron", hour=2, args=[scheduler])  # , minute=31
-    scheduler.start()
+    main()
+    # scheduler = BlockingScheduler()
+    # scheduler.add_job(main, "cron", hour=4, args=[scheduler])  # , minute=31
+    # scheduler.start()
