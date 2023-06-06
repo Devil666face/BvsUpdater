@@ -1,0 +1,13 @@
+[Unit]
+Description=Updater for BVS one binary
+After=network.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=%PWD%
+ExecStart=%PWD%/main.bin -d
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

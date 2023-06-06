@@ -1,0 +1,154 @@
+task:
+  remove: True
+  other: True
+  drw_local: True
+  drw: True
+  drw_linux: True
+  ksc: True
+  weekly_pack: True
+  rename: True
+  hash: True
+  pre_total_script: False
+  total_archive: True
+  post_total_script: False
+
+schedule:
+  # mon - 0
+  # tue - 1
+  # wed - 2
+  # thu - 3
+  # fri - 4
+  # sat - 5
+  # sun - 6
+  hour: 5
+  minute: 30
+  day_of_week: 2
+  # day_of_week: False
+
+remove:
+  remove_list:
+    - '*.log'
+    - 'bases'
+    - 'Updates'
+    - 'Temp'
+    - 'report.txt'
+    - 'repo'
+    - 'repository'
+    - 'repository.zip'
+    - 'temp'
+    - 'drw11_base.zip'
+    - 'drw11_base.zip.ecp'
+  remove_exclude_list:
+    - 'updater.log'
+
+other:
+  kpda: True
+  fsb:
+    # Use only one pair of url
+    - 'https://www.avz-center.ru/avs_update/drweb/11/win/drw11_base.zip'
+    - 'https://www.avz-center.ru/avs_update/drweb/11/win/drw11_base.zip.ecp'
+    # - 'https://82.208.68.58/avs_update/drweb/11/win/drw11_base.zip'
+    # - 'https://82.208.68.58/avs_update/drweb/11/win/drw11_base.zip.ecp'
+    # - 'https://31.173.110.124/avs_update/drweb/11/win/drw11_base.zip'
+    # - 'https://31.173.110.124/avs_update/drweb/11/win/drw11_base.zip.ecp'
+    # - 'https://82.200.93.253/avs_update/drweb/11/win/drw11_base.zip'
+    # - 'https://82.200.93.253/avs_update/drweb/11/win/drw11_base.zip.ecp'
+    # - 'https://85.21.159.7/avs_update/drweb/11/win/drw11_base.zip'
+    # - 'https://85.21.159.7/avs_update/drweb/11/win/drw11_base.zip.ecp'
+  curl:
+    - 'https://rescuedisk.s.kaspersky-labs.com/latest/krd.iso'
+    - 'https://download.geo.drweb.com/pub/drweb/livedisk/drweb-livedisk-900-cd.iso'
+  # fsb: False
+  # curl: False
+  # kpda: False
+
+drw_local:
+  DRW_ESS6: True
+  DRW_ESS6_MSVS: True
+  # DRW_ESS6: False
+  # DRW_ESS6_MSVS: False
+
+drw:
+  DRW_ESS10: True
+  DRW_SS:
+    - 'DRW_SS9'
+    - 'DRW_SS10'
+    - 'DRW_SS11'
+    - 'DRW_SS11.5'
+  DRW_ESS:
+    - 'DRW_ESS13'
+    - 'DRW_ESS11.00.0,2'
+    - 'DRW_ESS11'
+  # DRW_ESS10: False
+  # DRW_SS: False
+  # DRW_ESS: False
+
+drw_linux:
+  drw_linux_dict:
+    'DRW_Linux11.3': 'DRW_ESS13'
+    'DRW_Linux11': 'DRW_ESS11.00.0,2'
+    'DRW_Linux10': 'DRW_ESS10'
+
+ksc:
+  ksc_list:
+    - 'KSC_all'
+    - 'KAV_old'
+    - 'KES_11'
+    - 'KESL_11'
+    - 'KESL_10.1.2_Elbrus'
+  
+weekly_pack:
+  weekly_exclude_list:
+    - 'updates'
+    - 'FSB.zip'
+    - 'DRW_ESS10.zip'
+    - 'DRW_ESS11.zip'
+    - 'DRW_ESS11.00.0,2.zip'
+    - 'DRW_ESS13.zip'
+  weekly_date_tag_old: False
+  weekly_week_day: False
+  weekly_days_ago: False
+  # weekly_date_tag_old: '20230321'
+  # weekly_week_day: 'wednesday'
+  # weekly_days_ago: 7
+  
+rename:
+  rename_date_tag: False
+  # rename_date_tag: '20230305'
+
+pre_total_script:
+  pre_total_script_list:
+    - './script.sh'
+
+total_archive:
+  folder_ierarchy:
+    "DRW*weekly*": 
+      - "DrWeb" 
+      - "weekly"
+    "K*weekly*": 
+      - "Kaspersky" 
+      - "weekly"
+    "DRW*": 
+      - "DrWeb" 
+      - "full"
+    "K*": 
+      - "Kaspersky" 
+      - "full"
+    "*.iso": 
+      - "LiveCD"
+    "kpda_avdb*": 
+      - "KPDA"
+    "*/full/DRW*weekly*": 
+      - "DrWeb" 
+      - "weekly"
+    "*/full/K*weekly*": 
+      - "Kaspersky" 
+      - "weekly"
+  
+  total_archive_date_tag: False
+  # total_archive_date_tag: '20230305'
+
+post_total_script:
+  post_total_script_list:
+    - './script.sh'
+

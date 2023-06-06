@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zones>
+
+  <geo-update path="/xmlzone/mo2018oct/release/1100/windows">
+      <server name="geo drweb update" address="update.geo.drweb.com"/>
+  </geo-update>
+
+  <path value="/xmlzone/mo2018oct/release/1100/windows"/>
+  <protocol value="http"/>
+
+  <zone name="zone1" address="195.161.158.50"/>
+  <zone name="zone2" address="213.59.3.178"/>
+  <zone name="zone3" address="217.16.27.61"/>
+  <zone name="zone4" address="217.67.177.162"/>
+  <zone name="zone5" address="217.67.177.163"/>
+  <zone name="zone6" address="217.67.177.164"/>
+  <zone name="zone7" address="46.46.160.203"/>
+  <zone name="zone8" address="81.176.67.172"/>
+  <zone name="zone9" address="81.176.67.173"/>
+  <zone name="zone10" address="83.222.3.90"/>
+  <zone name="zone11" address="85.10.234.30"/>
+  <zone name="zone12" address="87.242.75.131"/>
+  <zone name="zone13" address="89.111.188.126"/>
+  <zone name="zone14" address="89.111.188.80"/>
+  <zone name="zone15" address="188.254.56.226"/>
+
+<sign value="CD11CC07129A5EA4EA5E00EF4727B6A8AC11B40B146F1C7196CFB6617011396DE7D14E40C8D0481A97A8A0583B5EF2C48CC924A46F1CB2541F073699C1A9EF26"/>
+</zones>
