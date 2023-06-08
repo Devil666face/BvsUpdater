@@ -12,7 +12,7 @@ from typing import (
 
 class Config:
     @log_obj
-    def __init__(self, config_file_path="updater.yaml"):
+    def __init__(self, config_file_path: str = "updater.yaml"):
         self.config = self.__read_conf(config_file_path)
         self.task = self.__parse_section("task")
         self.__parse_section("schedule")

@@ -1,4 +1,5 @@
 *.log
+/python
 *.zip
 repo
 agent.key

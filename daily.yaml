@@ -1,29 +1,21 @@
 task:
-  remove: True
-  other: True
-  drw_local: True
-  drw: True
-  drw_linux: True
+  remove: False
+  other: False
+  drw_local: False
+  drw: False
+  drw_linux: False
   ksc: True
-  weekly_pack: True
+  weekly_pack: False
   rename: True
-  hash: True
+  hash: False
   pre_total_script: False
   total_archive: True
-  post_total_script: True
+  post_total_script: False
 
 schedule:
-  # mon - 0
-  # tue - 1
-  # wed - 2
-  # thu - 3
-  # fri - 4
-  # sat - 5
-  # sun - 6
   hour: 5
   minute: 30
-  day_of_week: 2
-  # day_of_week: False
+  day_of_week: False
 
 remove:
   remove_list:
@@ -92,10 +84,10 @@ drw_linux:
 ksc:
   ksc_list:
     - 'KSC_all'
-    - 'KAV_old'
-    - 'KES_11'
-    - 'KESL_11'
-    - 'KESL_10.1.2_Elbrus'
+    # - 'KAV_old'
+    # - 'KES_11'
+    # - 'KESL_11'
+    # - 'KESL_10.1.2_Elbrus'
   
 weekly_pack:
   weekly_exclude_list:
@@ -114,7 +106,7 @@ weekly_pack:
   
 rename:
   rename_date_tag: False
-  # rename_date_tag: '20230305'
+  rename_date_tag: 'daily'
 
 pre_total_script:
   pre_total_script_list:
@@ -146,12 +138,9 @@ total_archive:
       - "weekly"
   
   total_archive_date_tag: False
-  # total_archive_date_tag: '20230305'
+  total_archive_date_tag: 'daily'
 
 post_total_script:
   post_total_script_list:
     - './script/stromscp.sh root@10.148.3.85'
     - './script/stromscp.sh root@10.148.3.86'
-    - './script/cloud.sh'
-    - './script/ftp.sh'
-    - './script/os.sh'

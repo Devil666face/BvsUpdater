@@ -40,9 +40,9 @@ from functools import wraps
 exec_command = DRWLinuxPacker.exec_command
 
 
-def main():
+def main(config_file_path: str = "updater.yaml") -> None:
     try:
-        config = Config()
+        config = Config(config_file_path)
         process = Process(config)
     except KeyboardInterrupt:
         logger.debug("Exit from keyboard")
@@ -223,6 +223,34 @@ class Process:
             exec_command(script)
 
 
+def create_task_for_config(
+    scheduler: BlockingScheduler, config_file_path: str = "updater.yaml"
+) -> None:
+    config = Config(config_file_path)
+    if config.day_of_week is not False:
+        logger.info(
+            f"Update start at weekday:{string_week_day(config.day_of_week)} hour:{config.hour} minute:{config.minute}"
+        )
+        scheduler.add_job(
+            main,
+            "cron",
+            hour=int(config.hour),
+            minute=int(config.minute),
+            day_of_week=int(config.day_of_week),
+        )
+    else:
+        logger.info(
+            f"Update start at weekday:everyday hour:{config.hour} minute:{config.minute}"
+        )
+        scheduler.add_job(
+            main, "cron", hour=int(config.hour), minute=int(config.minute)
+        )
+    try:
+        scheduler.start()
+    except KeyboardInterrupt:
+        logger.debug("Exit from keyboard")
+
+
 if __name__ == "__main__":
     """Точка входа в приложение при запуске через ./main
     Запуск этого скрипта через какие-то кастомные bash выполнять
@@ -230,31 +258,14 @@ if __name__ == "__main__":
     """
     if args.daemon:
         logger.info("Exec in daemon mode")
-        config = Config()
         scheduler = BlockingScheduler()
-        if config.day_of_week is not False:
-            logger.info(
-                f"Update start at weekday:{string_week_day(config.day_of_week)} hour:{config.hour} minute:{config.minute}"
-            )
-            scheduler.add_job(
-                main,
-                "cron",
-                hour=int(config.hour),
-                minute=int(config.minute),
-                day_of_week=int(config.day_of_week),
-            )
-        else:
-            logger.info(
-                f"Update start at weekday:everyday hour:{config.hour} minute:{config.minute}"
-            )
-            scheduler.add_job(
-                main, "cron", hour=int(config.hour), minute=int(config.minute)
-            )
-        # scheduler.add_job(main, "cron", hour=16, minute=15)  # , minute=31
-        try:
-            scheduler.start()
-        except KeyboardInterrupt:
-            logger.debug("Exit from keyboard")
-    else:
-        logger.info("Exec in download mode")
+        create_task_for_config(scheduler, config_file_path="updater.yaml")
+        create_task_for_config(scheduler, config_file_path="daily.yaml")
+    elif args.now:
+        logger.info("Exec in download mode for weekly bases")
         main()
+    elif args.today:
+        logger.info("Exec in download mode for daily bases")
+        main(config_file_path="daily.yaml")
+    else:
+        logger.info("Use -h/--help for get help message")
