@@ -225,7 +225,8 @@ class Process:
 
 
 def create_task_for_config(
-    scheduler: BlockingScheduler, config_file_path: str = "updater.yaml"
+    scheduler: BlockingScheduler | BackgroundScheduler,
+    config_file_path: str = "updater.yaml",
 ) -> None:
     config = Config(config_file_path)
     if config.day_of_week is not False:
@@ -238,13 +239,18 @@ def create_task_for_config(
             hour=int(config.hour),
             minute=int(config.minute),
             day_of_week=int(config.day_of_week),
+            args=[config_file_path],
         )
     else:
         logger.info(
             f"Update start at weekday:everyday hour:{config.hour} minute:{config.minute}"
         )
         scheduler.add_job(
-            main, "cron", hour=int(config.hour), minute=int(config.minute)
+            main,
+            "cron",
+            hour=int(config.hour),
+            minute=int(config.minute),
+            args=[config_file_path],
         )
     try:
         scheduler.start()
