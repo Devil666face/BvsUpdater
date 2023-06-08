@@ -2,6 +2,7 @@
 import datetime
 from typing import List
 from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 from loader.drwloader import (
     DRWLoader,
     DRWLoaderSS,
@@ -258,9 +259,9 @@ if __name__ == "__main__":
     """
     if args.daemon:
         logger.info("Exec in daemon mode")
-        scheduler = BlockingScheduler()
-        create_task_for_config(scheduler, config_file_path="updater.yaml")
-        create_task_for_config(scheduler, config_file_path="daily.yaml")
+        # scheduler = BlockingScheduler()
+        create_task_for_config(BackgroundScheduler(), config_file_path="daily.yaml")
+        create_task_for_config(BlockingScheduler(), config_file_path="updater.yaml")
     elif args.now:
         logger.info("Exec in download mode for weekly bases")
         main()
