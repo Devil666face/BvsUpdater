@@ -9,12 +9,18 @@
 # ENV http_proxy="http://proxy01.ap17.mil.ru:2270"
 # ENV https_proxy="http://proxy01.ap17.mil.ru:2270"
 
+.default_rules:
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
 stages:       
   - build
   - release
 
 build:
   stage: build
+  rules:
+    - !reference [.default_rules, rules]
   image: registry.dev.ap17.mil.ru/docker-images/debian10-python-nuitka:latest
 # image: debian:10
   tags:
@@ -44,6 +50,8 @@ build:
 
 release:
   stage: release
+  rules:
+    - !reference [.default_rules, rules]
   image: registry.dev.ap17.mil.ru/docker-images/release-cli:latest
   # image: registry.gitlab.com/gitlab-org/release-cli:latest
   tags:
