@@ -1,5 +1,5 @@
 task:
-  remove: False
+  remove: True
   other: False
   drw_local: False
   drw: False
@@ -10,7 +10,7 @@ task:
   hash: False
   pre_total_script: False
   total_archive: True
-  post_total_script: False
+  post_total_script: True
 
 schedule:
   hour: 5
@@ -19,8 +19,8 @@ schedule:
 
 remove:
   remove_list:
+    - 'daily'
     - '*.log'
-    - 'bases'
     - 'Updates'
     - 'Temp'
     - 'report.txt'
@@ -32,6 +32,7 @@ remove:
     - 'drw11_base.zip.ecp'
   remove_exclude_list:
     - 'updater.log'
+    - 'bases'
 
 other:
   kpda: True
@@ -105,8 +106,8 @@ weekly_pack:
   # weekly_days_ago: 7
   
 rename:
-  rename_date_tag: False
   rename_date_tag: 'daily'
+  # rename_date_tag: False
 
 pre_total_script:
   pre_total_script_list:
@@ -114,33 +115,13 @@ pre_total_script:
 
 total_archive:
   folder_ierarchy:
-    "DRW*weekly*": 
-      - "DrWeb" 
-      - "weekly"
-    "K*weekly*": 
-      - "Kaspersky" 
-      - "weekly"
-    "DRW*": 
-      - "DrWeb" 
-      - "full"
-    "K*": 
-      - "Kaspersky" 
-      - "full"
-    "*.iso": 
-      - "LiveCD"
-    "kpda_avdb*": 
-      - "KPDA"
-    "*/full/DRW*weekly*": 
-      - "DrWeb" 
-      - "weekly"
-    "*/full/K*weekly*": 
-      - "Kaspersky" 
-      - "weekly"
-  
-  total_archive_date_tag: False
+    ".": 
+      - "." 
+
   total_archive_date_tag: 'daily'
+  # total_archive_date_tag: False
 
 post_total_script:
   post_total_script_list:
-    - './script/stromscp.sh root@10.148.3.85'
-    - './script/stromscp.sh root@10.148.3.86'
+    - './script/stromscp.sh root@10.148.3.85 daily'
+    - './script/stromscp.sh root@10.148.3.86 daily'

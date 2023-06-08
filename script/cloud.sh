@@ -1,5 +1,5 @@
 #!/bin/bash
-HOME=/bvsupdater-build
+HOME=$PWD
 REMOTE_DIR_FOR_BASE=/mnt/cloud/BVS
 SSH=pev@172.25.1.138
 LOG_FILE=$HOME/script/$(basename "$0" .sh).log

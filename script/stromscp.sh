@@ -1,30 +1,30 @@
 #!/bin/bash
-HOME=/bvsupdater-build
+HOME=$PWD
 DATE=$(date "+%Y%m%d")
 SSH=$1
 
 helpmsg() {
 	echo "Usage: ./stromscp [SSH DESTINATION (always)] [DATE TAG (necessary)]"
-    	echo "Options:"
-    	echo "-h, --help                Display this help message"
-    	echo "Example:"
+  	echo "Options:"
+  	echo "-h, --help                Display this help message"
+  	echo "Example:"
 	echo "./stromscp root@10.148.3.85"
 	echo "./stromscp root@10.148.3.85 20230426"
 	echo "./stromscp root@10.148.3.86"
 	echo "./stromscp root@10.148.3.86 20230426"
 	echo "Use only root user"
-    	exit 0
+  	exit 0
 }
 
 check_have_dir() {
-        if [ ! -d $HOME/$DATE ]; then
-                echo "Not found dir for date: $DATE"
-                exit 1
-        fi
-        echo "Dir with base $DATE was found"
+  if [ ! -d $HOME/$DATE ]; then
+    echo "Not found dir for date: $DATE"
+    exit 1
+  fi
+  echo "Dir with base $DATE was found"
 	if [ -z "$(readlink -e "$HOME/$DATE/updates_$DATE.zip")" ]; then
-	   	echo "Not found file for date: $DATE"
-   		exit 1
+   	echo "Not found file for date: $DATE"
+ 		exit 1
 	fi
 }
 
@@ -47,7 +47,7 @@ if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
 fi
 
 if [ ! -z "$2" ]; then
-        DATE=$2
+  DATE=$2
 fi
 
 check_have_dir

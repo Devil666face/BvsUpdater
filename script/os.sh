@@ -1,5 +1,5 @@
 #!/bin/bash
-HOME=/bvsupdater-build
+HOME=$PWD
 REMOTE_DIR_FOR_BASE=/mnt/os
 LOG_FILE=$HOME/script/$(basename "$0" .sh).log
 DATE=$(date "+%Y%m%d")
