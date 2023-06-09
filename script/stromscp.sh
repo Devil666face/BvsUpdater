@@ -4,14 +4,14 @@ DATE=$(date "+%Y%m%d")
 SSH=$1
 
 helpmsg() {
-	echo "Usage: ./stromscp [SSH DESTINATION (always)] [DATE TAG (necessary)]"
+	echo "Usage: ./script/stromscp [SSH DESTINATION (always)] [DATE TAG (necessary)]"
   	echo "Options:"
   	echo "-h, --help                Display this help message"
   	echo "Example:"
-	echo "./stromscp root@10.148.3.85"
-	echo "./stromscp root@10.148.3.85 20230426"
-	echo "./stromscp root@10.148.3.86"
-	echo "./stromscp root@10.148.3.86 20230426"
+	echo "./script/stromscp root@10.148.3.85"
+	echo "./script/stromscp root@10.148.3.85 20230426"
+	echo "./script/stromscp root@10.148.3.86"
+	echo "./script/stromscp root@10.148.3.86 20230426"
 	echo "Use only root user"
   	exit 0
 }

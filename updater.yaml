@@ -29,8 +29,8 @@ remove:
   remove_list:
     - '*.log'
     - 'bases'
-    - 'Updates'
-    - 'Temp'
+    # - 'Updates'
+    # - 'Temp'
     - 'report.txt'
     - 'repo'
     - 'repository'

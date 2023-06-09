@@ -21,8 +21,8 @@ remove:
   remove_list:
     - 'daily'
     - '*.log'
-    - 'Updates'
-    - 'Temp'
+    # - 'Updates'
+    # - 'Temp'
     - 'report.txt'
     - 'repo'
     - 'repository'
