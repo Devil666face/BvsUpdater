@@ -20,22 +20,22 @@ copy() {
 	log "START -> Copying BVS"
 	cp $HOME/$DATE/Kaspersky/full/KSC_all_$DATE.zip $REMOTE_DIR_FOR_BASE
 	log "START -> Unzip BVS"
-	unzip -u $REMOTE_DIR_FOR_BASE/KSC_all_$DATE.zip -d $REMOTE_DIR_FOR_BASE
+	unzip -o $REMOTE_DIR_FOR_BASE/KSC_all_$DATE.zip -d $REMOTE_DIR_FOR_BASE
 	#unzip $HOME/$DATE/Kaspersky/full/KSC_all_$DATE.zip -d $REMOTE_DIR_FOR_BASE
 }
 
 check_have_dir() {
-        if [ ! -d $HOME/$DATE ]; then
-                log "Not found dir for date: $DATE"
-                exit 1
-        fi
-        log "Dir with base $DATE was found"
+  if [ ! -d $HOME/$DATE ]; then
+    log "Not found dir for date: $DATE"
+    exit 1
+  fi
+  log "Dir with base $DATE was found"
 }
 
 exec 2>>$LOG_FILE
 
 if [ ! -z "$1" ]; then
-        DATE=$1
+  DATE=$1
 fi
 log "Find base for date: $DATE"
 

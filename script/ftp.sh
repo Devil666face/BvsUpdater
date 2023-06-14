@@ -30,17 +30,17 @@ copy(){
 }
 
 check_have_dir() {
-        if [ ! -d $HOME/$DATE ]; then
-                log "Not found dir for date: $DATE"
-                exit 1
-        fi
-        log "Dir with base $DATE was found"
+  if [ ! -d $HOME/$DATE ]; then
+    log "Not found dir for date: $DATE"
+    exit 1
+  fi
+  log "Dir with base $DATE was found"
 }
 
 exec 2>>$LOG_FILE
 
 if [ ! -z "$1" ]; then
-        DATE=$1
+  DATE=$1
 fi
 log "Find base for date: $DATE"
 

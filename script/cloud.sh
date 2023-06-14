@@ -6,8 +6,8 @@ LOG_FILE=$HOME/script/$(basename "$0" .sh).log
 DATE=$(date "+%Y%m%d")
 
 log() {
-        echo "$1"
-        echo "$(date "+%d.%m.%Y %H:%M:%S")--> $1" >> "$LOG_FILE"
+  echo "$1"
+  echo "$(date "+%d.%m.%Y %H:%M:%S")--> $1" >> "$LOG_FILE"
 }
 
 copy() {
