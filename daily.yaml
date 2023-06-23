@@ -85,11 +85,12 @@ drw_linux:
 ksc:
   ksc_list:
     - 'KSC_all'
-    - 'KESA_10'
     # - 'KAV_old'
     # - 'KES_11'
     # - 'KESL_11'
     # - 'KESL_10.1.2_Elbrus'
+    # - 'KLMS_8'
+    # - 'KSLVA_5'
   
 weekly_pack:
   weekly_exclude_list:
