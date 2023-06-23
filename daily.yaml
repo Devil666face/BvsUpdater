@@ -85,6 +85,7 @@ drw_linux:
 ksc:
   ksc_list:
     - 'KSC_all'
+    - 'KESA_10'
     # - 'KAV_old'
     # - 'KES_11'
     # - 'KESL_11'
