@@ -13,7 +13,7 @@ task:
   post_total_script: True
 
 schedule:
-  hour: 5
+  hour: 1
   minute: 30
   day_of_week: False
 
