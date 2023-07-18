@@ -2,7 +2,7 @@ task:
   remove: True
   other: False
   drw_local: False
-  drw: False
+  drw: True
   drw_linux: False
   ksc: True
   weekly_pack: False
@@ -70,10 +70,10 @@ drw:
     - 'DRW_SS11.5'
   DRW_ESS:
     - 'DRW_ESS13'
-    - 'DRW_ESS11.00.0,2'
-    - 'DRW_ESS11'
-  # DRW_ESS10: False
-  # DRW_SS: False
+    # - 'DRW_ESS11.00.0,2'
+    # - 'DRW_ESS11'
+  DRW_ESS10: False
+  DRW_SS: False
   # DRW_ESS: False
 
 drw_linux:
@@ -85,9 +85,9 @@ drw_linux:
 ksc:
   ksc_list:
     - 'KSC_all'
+    - 'KESL_11'
     # - 'KAV_old'
     # - 'KES_11'
-    # - 'KESL_11'
     # - 'KESL_10.1.2_Elbrus'
     # - 'KLMS_8'
     # - 'KSLVA_5'
