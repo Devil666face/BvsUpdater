@@ -127,3 +127,4 @@ post_total_script:
   post_total_script_list:
     - './script/stromscp.sh root@10.148.3.85 daily'
     - './script/stromscp.sh root@10.148.3.86 daily'
+    - '/usr/bin/cp ./daily/updates_daily.zip /mnt/os'
