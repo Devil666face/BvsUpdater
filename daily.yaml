@@ -86,6 +86,7 @@ ksc:
   ksc_list:
     - 'KSC_all'
     - 'KESL_11'
+    - 'KESA_10'
     # - 'KAV_old'
     # - 'KES_11'
     # - 'KESL_10.1.2_Elbrus'
