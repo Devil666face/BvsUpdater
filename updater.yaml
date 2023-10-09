@@ -45,8 +45,10 @@ other:
   kpda: True
   fsb:
     # Use only one pair of url
-    - 'https://www.avz-center.ru/avs_update/drweb/11/win/drw11_base.zip'
-    - 'https://www.avz-center.ru/avs_update/drweb/11/win/drw11_base.zip.ecp'
+    - 'https://www.avz-center.ru/avs_update/drweb/12/win/drw12_base.zip'
+    - 'https://www.avz-center.ru/avs_update/drweb/12/win/drw12_base.zip.ecp'
+    # - 'https://www.avz-center.ru/avs_update/drweb/11/win/drw11_base.zip'
+    # - 'https://www.avz-center.ru/avs_update/drweb/11/win/drw11_base.zip.ecp'
     # - 'https://82.208.68.58/avs_update/drweb/11/win/drw11_base.zip'
     # - 'https://82.208.68.58/avs_update/drweb/11/win/drw11_base.zip.ecp'
     # - 'https://31.173.110.124/avs_update/drweb/11/win/drw11_base.zip'
