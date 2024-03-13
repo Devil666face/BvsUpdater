@@ -1,0 +1,13 @@
+[Unit]
+Description=Load all bases now
+After=network.target
+
+[Service]
+User=root
+Group=root
+Type=oneshot
+WorkingDirectory=/BvsUpdater
+ExecStart=/BvsUpdater/main.bin -n
+
+[Install]
+WantedBy=multi-user.target
