@@ -38,10 +38,8 @@ other:
   kpda: True
   fsb:
     # Use only one pair of url
-    - 'https://www.avz-center.ru/avs_update/drweb/12/win/drw12_base.zip'
-    - 'https://www.avz-center.ru/avs_update/drweb/12/win/drw12_base.zip.ecp'
-    # - 'https://www.avz-center.ru/avs_update/drweb/11/win/drw11_base.zip'
-    # - 'https://www.avz-center.ru/avs_update/drweb/11/win/drw11_base.zip.ecp'
+    - 'https://www.avz-center.ru/avs_update/drweb/11/win/drw11_base.zip'
+    - 'https://www.avz-center.ru/avs_update/drweb/11/win/drw11_base.zip.ecp'
     # - 'https://82.208.68.58/avs_update/drweb/11/win/drw11_base.zip'
     # - 'https://82.208.68.58/avs_update/drweb/11/win/drw11_base.zip.ecp'
     # - 'https://31.173.110.124/avs_update/drweb/11/win/drw11_base.zip'
@@ -87,12 +85,12 @@ drw_linux:
 ksc:
   ksc_list:
     - 'KSC_all'
-    - 'KESL_11'
-    - 'KESA_10'
+    # - 'KESL_11'
+    # - 'KESA_10'
     # - 'KAV_old'
     # - 'KES_11'
     # - 'KESL_10.1.2_Elbrus'
-    # - 'KLMS_8'
+    - 'KLMS'
     # - 'KSLVA_5'
   
 weekly_pack:
@@ -130,4 +128,6 @@ post_total_script:
   post_total_script_list:
     - './script/stromscp.sh root@10.148.3.85 daily'
     - './script/stromscp.sh root@10.148.3.86 daily'
-    - '/usr/bin/cp ./daily/updates_daily.zip /mnt/os'
+    - '/usr/bin/umount -a'
+    - '/usr/bin/mount -a'
+    - '/usr/bin/cp ./daily/KSC_all_daily.zip /mnt/os'
